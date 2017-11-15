@@ -1,7 +1,7 @@
 import geomD2.DroiteD2;
 import geomD2.PointD2;
-import java.awt.Graphics;
-import java.awt.Color;
+
+import java.awt.*;
 
 import javax.swing.*;
 
@@ -11,13 +11,13 @@ public class DessinPoints extends JPanel {
     int enveloppe;     // dimension des rectangles
 	
     DessinPoints(DataPoints pts,
-   		 int largeur, int hauteur,
-   		 int bord, int enveloppe) {
+		 int largeur, int hauteur,
+		 int bord, int enveloppe) {
 		
 		this.listePts = pts;
 		this.bord = bord;
 		this.enveloppe = enveloppe;
-		this.setSize(largeur, hauteur);	
+		this.setSize(largeur, hauteur);
 		
 	}
 
@@ -48,7 +48,7 @@ public class DessinPoints extends JPanel {
 		g.setXORMode(Color.red);
 
 		// lire les points de {listePts} et dessiner les rectangles et les droites
-		// correspondants		
+		// correspondants
 
 		for(int i = 0; i < this.listePts.size(); i++) {
 			if(this.listePts.get(i).size() > 1) { // Si c'est une droite
@@ -66,7 +66,12 @@ public class DessinPoints extends JPanel {
 				Integer y = (int)(Math.round((pt1.getY() -listePts.min_y)*FactEchY-this.enveloppe/2+this.bord));
 				g.drawRect(x , y , this.enveloppe, this.enveloppe);
 
+				System.out.println("x_1 :" + x);
+				System.out.println("y_1 :" + y);
 				test = new PointD2(x, y);
+
+				System.out.println("x_1-2 :" + test.getX());
+				System.out.println("y_1-2 :" + test.getY());
 
 				x = (int)(Math.round((pt2.getX() -listePts.min_x)*FactEchX-this.enveloppe/2+this.bord));
 				y = (int)(Math.round((pt2.getY() -listePts.min_y)*FactEchY-this.enveloppe/2+this.bord));
@@ -74,9 +79,16 @@ public class DessinPoints extends JPanel {
 
 				test_2 = new PointD2(x, y);
 
+
+				droite.getPoint();
 				//Affiche les 2 points
+				System.out.println("x_2 :" + x);
+				System.out.println("y_2 :" + y);
 
 				System.out.println(DroiteD2.calc_pente(test, test_2));
+
+				System.out.println("x_2-2 :" + test.getX());
+				System.out.println("y_2-2 :" + test.getY());
 
 //				ret_1 = dessine_point(pt1,g, FactEchX, FactEchY);
 //				ret_2 = dessine_point(pt2,g, FactEchX, FactEchY);
@@ -86,7 +98,8 @@ public class DessinPoints extends JPanel {
 //				PointD2 test_2 = new PointD2(ret_2[0], ret_2[1]);
 				droite = new DroiteD2(test, test_2);
 
-				g.drawLine(0,droite.getOrdonnee(),test_2.getX(),test_2.getY());
+				//((Graphics2D) g).draw();
+				g.drawLine(0,(int)droite.getOrdonnee(),this.getWidth(),(int)droite.get_y_from_x(this.getWidth()));
 
 				System.out.println(droite.getOrdonnee());
 				

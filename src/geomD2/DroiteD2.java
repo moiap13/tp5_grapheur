@@ -9,7 +9,7 @@ public class DroiteD2 {
 	private PointD2 p = null;
 	private Double m = null;
 	private PointD2 p2;
-	private int ordonnee;
+	private double ordonnee;
 	//Les constructeurs :
 	//Un point et une pente
 	public DroiteD2 (PointD2 p, Double m) {
@@ -28,13 +28,13 @@ public class DroiteD2 {
 		p = p1;
 		this.p2 = p2;
 		m = calc_pente(p1, p2);//(double)((p2.getY() - p1.getY()) / (p2.getX() - p1.getX()));// m = (p2.y - p1.y) / (p2.x - p1.x)
-		this.ordonnee =  -1*((int)Math.floor(m) * p.getX()) + p.getY();
+		this.ordonnee =  getIntersectionY();
 	}
 
 	public static double calc_pente(PointD2 p1, PointD2 p2)
 	{
 		if(p2.getX() - p1.getX() != 0)
-			return (double)((p2.getY() - p1.getY()) / (p2.getX() - p1.getX()));
+			return ((double)(p2.getY() - p1.getY()) / (double)(p2.getX() - p1.getX()));
 		else
 			return 0;
 	}
@@ -64,7 +64,7 @@ public class DroiteD2 {
 		return m;
 	}
 	//obtonnir l'ordonnée a l'origine
-	public int getOrdonnee() { return  ordonnee; }
+	public double getOrdonnee() { return  ordonnee; }
 	
 	// Les accesseurs qui effectuent un calcul
 	// abscisse d'intersection avec axe x
@@ -75,6 +75,8 @@ public class DroiteD2 {
 	public Double getIntersectionY() {
 		return p.getY() - (m * p.getX());
 	}
+
+	public double get_y_from_x(int x) { return x*m+getIntersectionY(); }
 	
 	public boolean contient(PointD2 p) {
 		return this.m * p.getX() - p.getY() + getIntersectionY() == 0;
