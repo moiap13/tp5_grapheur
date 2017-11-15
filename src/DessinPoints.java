@@ -2,6 +2,8 @@ import geomD2.DroiteD2;
 import geomD2.PointD2;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
 
@@ -9,6 +11,8 @@ public class DessinPoints extends JPanel {
 	DataPoints listePts;
     int bord;          // taille des bords
     int enveloppe;     // dimension des rectangles
+	int initiale_size[];
+	boolean enter_once = true;
 	
     DessinPoints(DataPoints pts,
 		 int largeur, int hauteur,
@@ -18,20 +22,20 @@ public class DessinPoints extends JPanel {
 		this.bord = bord;
 		this.enveloppe = enveloppe;
 		this.setSize(largeur, hauteur);
-		
+		initiale_size = new int[2];
 	}
 
-	private int[] dessine_point(PointD2 point, Graphics g, double FactEchX, double FactEchY)
+	private void dessine_point(PointD2 point, Graphics g, double FactEchX, double FactEchY)
 	{
 		int ret[] = new int[2];
-		Integer x = (int)(Math.round((point.getX() -listePts.min_x)*FactEchX-this.enveloppe/2+this.bord));
-		Integer y = (int)(Math.round((point.getY() -listePts.min_y)*FactEchY-this.enveloppe/2+this.bord));
-		g.drawRect(x , y , this.enveloppe, this.enveloppe);
+		double x = point.getX() / FactEchX;
+		double y = point.getY() / FactEchY;
+		g.drawRect((int)x , (int)y , this.enveloppe, this.enveloppe);
 
-		ret[0] = x;
-		ret[1] = y;
+//		ret[0] = x;
+//		ret[1] = y;
 
-		return ret;
+//		return ret;
 	}
 	
 	public void paintComponent(Graphics g){
@@ -41,8 +45,18 @@ public class DessinPoints extends JPanel {
 		//g.drawLine(0, 0, this.getWidth(), getHeight());
 		//g.drawLine(10, 10, 65, 65); // xdepart, ydepart, xarrivee, yarrivee
 
-		double FactEchX = (this.getSize().width-this.bord*2) / this.listePts.etendue_x;
-		double FactEchY = (this.getSize().height-this.bord*2) / this.listePts.etendue_y;
+
+		if(enter_once)
+		{
+			enter_once = false;
+
+			initiale_size[0] = this.getWidth();
+			initiale_size[1] = this.getHeight();
+		}
+		double FactEchX = (double)initiale_size[0] / (double)this.getSize().width;
+		double FactEchY = (double)initiale_size[1] / (double)this.getSize().height;
+//		double FactEchX = (this.getSize().width-this.bord*2) / this.listePts.etendue_x;
+//		double FactEchY = (this.getSize().height-this.bord*2) / this.listePts.etendue_y;
 		
 		super.paintComponent(g);
 		g.setXORMode(Color.red);
@@ -62,22 +76,25 @@ public class DessinPoints extends JPanel {
 				int ret_1[] = new int[2];
 				int ret_2[] = new int[2];
 
-				Integer x = (int)(Math.round((pt1.getX() -listePts.min_x)*FactEchX-this.enveloppe/2+this.bord));
-				Integer y = (int)(Math.round((pt1.getY() -listePts.min_y)*FactEchY-this.enveloppe/2+this.bord));
-				g.drawRect(x , y , this.enveloppe, this.enveloppe);
+				double x = (double)pt1.getX() / FactEchX;
+				double y = (double)pt1.getY() / FactEchY;
+				//g.drawRect((int)x , (int)y , this.enveloppe, this.enveloppe);
+				((Graphics2D)g).draw(new Rectangle2D.Double(x-(double)this.enveloppe/2 ,y-(double)this.enveloppe/2 , this.enveloppe, this.enveloppe));
+
 
 				System.out.println("x_1 :" + x);
 				System.out.println("y_1 :" + y);
-				test = new PointD2(x, y);
+				test = new PointD2((int)x, (int)y);
 
 				System.out.println("x_1-2 :" + test.getX());
 				System.out.println("y_1-2 :" + test.getY());
 
-				x = (int)(Math.round((pt2.getX() -listePts.min_x)*FactEchX-this.enveloppe/2+this.bord));
-				y = (int)(Math.round((pt2.getY() -listePts.min_y)*FactEchY-this.enveloppe/2+this.bord));
-				g.drawRect(x , y , this.enveloppe, this.enveloppe);
+				x = (double)pt2.getX() / FactEchX;
+				y = (double)pt2.getY() / FactEchY;
+				//g.drawRect((int)x-this.enveloppe/2 ,(int)y-this.enveloppe/2 , this.enveloppe, this.enveloppe);
 
-				test_2 = new PointD2(x, y);
+				((Graphics2D)g).draw(new Rectangle2D.Double(x-(double)this.enveloppe/2 ,y-(double)this.enveloppe/2 , this.enveloppe, this.enveloppe));
+				test_2 = new PointD2((int)x,(int) y);
 
 
 				droite.getPoint();
@@ -99,9 +116,10 @@ public class DessinPoints extends JPanel {
 				droite = new DroiteD2(test, test_2);
 
 				//((Graphics2D) g).draw();
-				g.drawLine(0,(int)droite.getOrdonnee(),this.getWidth(),(int)droite.get_y_from_x(this.getWidth()));
+				//g.drawLine(0,(int)droite.getOrdonnee(),this.getWidth(),(int)droite.get_y_from_x(this.getWidth()));
+				((Graphics2D)g).draw(new Line2D.Double(0 , droite.getOrdonnee(), this.getWidth(), droite.get_y_from_x(this.getWidth())));
 
-				System.out.println(droite.getOrdonnee());
+				System.out.println(droite.getPente());
 				
 //				int x1 = pt1.getX()
 //				g.drawRect(x, y, this.enveloppe, this.enveloppe);

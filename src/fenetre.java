@@ -13,7 +13,7 @@ public class fenetre {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(monGraphe,"Center");
 		f.setTitle("Grapheur");
-		f.setSize(400,400);
+		f.setSize(600,400);
 		f.setContentPane(monGraphe);
 	    f.setVisible(true);
 	}
