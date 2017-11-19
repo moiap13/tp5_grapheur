@@ -5,7 +5,6 @@ import geomD2.*;
 
 public class DataPoints extends ArrayList<ArrayList<PointD2>> {
 	int max_x, max_y, min_x, min_y, etendue_x, etendue_y;
-	//ArrayList<DroiteD2> droites;
 
 
 	public DataPoints (String fichier) {
@@ -70,25 +69,23 @@ public class DataPoints extends ArrayList<ArrayList<PointD2>> {
 		min_x = this.get(0).get(0).getX();
 		min_y = this.get(0).get(0).getY();
 		
-		for(int i = 0; i < this.size(); i++) {
+		for(int i = 0; i < this.size(); i++)
 			for(int j = 0; j < this.get(i).size(); j++) {
 				PointD2 pt = this.get(i).get(j);
 				
-				if (max_x < pt.getX()) {
+				if (max_x < pt.getX())
 					max_x = pt.getX();
-				}
-				if (max_y < pt.getY()) {
+
+				if (max_y < pt.getY())
 					max_y = pt.getY();
-				}
-				
-				if (min_x > pt.getX()) {
+
+				if (min_x > pt.getX())
 					min_x = pt.getX();
-				}
-				if (min_y > pt.getY()) {
+
+				if (min_y > pt.getY())
 					min_y = pt.getY();
-				}
 			}
-		}
+
 		this.etendue_x = max_x - min_x;
 		this.etendue_y = max_y - min_y;
 		

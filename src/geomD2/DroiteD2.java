@@ -36,7 +36,7 @@ public class DroiteD2 {
 		if(p2.getX() - p1.getX() != 0)
 			return ((double)(p2.getY() - p1.getY()) / (double)(p2.getX() - p1.getX()));
 		else
-			return 0;
+			return 1;
 	}
 
 	//Les modificateurs :
